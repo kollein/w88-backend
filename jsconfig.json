@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "./index.js",
+    "src/**/*",
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "lib",
+  ]
+}
