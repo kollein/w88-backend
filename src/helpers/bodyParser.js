@@ -1,10 +1,9 @@
 import code from '@/shared/code';
 
-export default function (req, res, next) {
-  try {
-    JSON.parse(req.body);
-    return next();
-  } catch (err) {
-    res.json({ error: code.ERROR, message: 'Body is not a JSON object' })
+export default function (err, req, res, next) {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    return res.json({ status: code.ERROR, message: err.message })
   }
+
+  next()
 }

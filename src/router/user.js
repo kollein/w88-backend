@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import userModel from '@/models/user';
 import code from '@/shared/code';
+import { SECRET_KEY } from '@/shared/index';
 
 export default function userRouter(router) {
 
@@ -43,7 +44,7 @@ export default function userRouter(router) {
           name: user.name,
           email: user.email,
         },
-        'secret123'
+        SECRET_KEY
       )
 
       return res.json({ status: code.SUCCESS, user: token })
@@ -56,7 +57,7 @@ export default function userRouter(router) {
     const token = req.headers['x-access-token']
 
     try {
-      const decoded = jwt.verify(token, 'secret123')
+      const decoded = jwt.verify(token, SECRET_KEY)
       const email = decoded.email
       const user = await userModel.findOne({ email: email })
 
@@ -72,7 +73,7 @@ export default function userRouter(router) {
     const token = req.headers['x-access-token']
 
     try {
-      const decoded = jwt.verify(token, 'secret123')
+      const decoded = jwt.verify(token, SECRET_KEY)
       const email = decoded.email
       await userModel.updateOne(
         { email: email },

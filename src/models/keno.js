@@ -16,14 +16,24 @@ const resultSchema = new mongoose.Schema(
 
 const kenoSchema = new mongoose.Schema(
 	{
-		id: { type: Number, required: true },
+		gameId: { type: String, required: true },
 		name: { type: String, required: true },
+		roundId: { type: Number, required: true },
 		result: { type: resultSchema, required: true },
 		start: { type: Number, required: true },
 		end: { type: Number, required: true },
+		status: { type: String, required: true }, // running|ended
 	},
 	{ collection: 'keno' }
 )
+
+kenoSchema.methods.toJSON = function () {
+	return {
+		id: this._id,
+		name: this.name,
+		duration: this.duration,
+	}
+}
 
 const kenoModel = mongoose.model('keno', kenoSchema)
 
