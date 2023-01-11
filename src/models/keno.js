@@ -20,8 +20,8 @@ const kenoSchema = new mongoose.Schema(
 		name: { type: String, required: true },
 		roundId: { type: Number, required: true },
 		result: { type: resultSchema, required: true },
-		start: { type: Number, required: true },
-		end: { type: Number, required: true },
+		startAt: { type: Number, required: true },
+		endAt: { type: Number, required: true },
 		status: { type: String, required: true }, // running|ended
 	},
 	{ collection: 'keno' }

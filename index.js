@@ -18,10 +18,10 @@ mongoose
 
 // initialize all routes
 initRouter(router);
-// add prefix
+// add router prefix
 app.use('/api', router);
 
-// heart beat
+// run the heart beat to perform the process in every second
 runHeartBeat();
 
 const PORT = 6000;
