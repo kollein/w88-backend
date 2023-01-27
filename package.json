@@ -23,8 +23,6 @@
 	},
 	"aliases": {
 		"@root": ".",
-		"@deep": "src/some/very/deep/directory/or/file",
-		"@my_module": "lib/some-file.js",
 		"@": "src"
 	}
 }

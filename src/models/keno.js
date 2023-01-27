@@ -11,6 +11,8 @@ const resultSchema = new mongoose.Schema(
 		upDownDraw: { type: String },
 		oddsEvensDraw: { type: String }, // based on 10 nums (odd numbers > 10, even numbers > 10, odd numbers = even numbers)
 		cross: { type: String }, // xien based on sum (BIG-ODD, BIG-EVEN, SMALL-ODD, SMALL-EVEN)
+		fiveE: { type: String }, // metal - wood - water - fire - earth
+		stone: { type: String }, // 
 	}
 )
 

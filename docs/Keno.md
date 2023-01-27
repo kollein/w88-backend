@@ -1,3 +1,4 @@
+https://info.gpiops.com/share/lottery/rules-keno-vi-vn.shtml
 ## Trò chơi Keno là trò chơi xổ số dựa trên các trang web xố số chính thức từ Trung Quốc (Bắc Kinh), Canada, Úc, Slovakia & Hàn Quốc
 
 Keno được chơi với 20 bi số được rút ngẫu nhiên từ 80 bi số từ 01 tới 80. Các vé cược có thể tiến hàng đặt cược vào các kiểu cược được giải thích sau đây
