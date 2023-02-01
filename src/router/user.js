@@ -1,10 +1,10 @@
-
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { v4 as uuidV4 } from 'uuid';
 import userModel from '@/models/user';
 import code from '@/shared/code';
 import { SECRET_KEY } from '@/shared/index';
-import { v4 as uuidV4 } from 'uuid';
+import authGuard from '@/middlewares/authGuard';
 
 export default function userRouter(router) {
 
@@ -59,7 +59,7 @@ export default function userRouter(router) {
 
   })
 
-  router.get('/iam', async (req, res) => {
+  router.get('/iam', authGuard, async (req, res) => {
     try {
       const proxyToken = req.headers['x-access-token']
       const user = await userModel.findOne({ proxyToken })
@@ -68,7 +68,7 @@ export default function userRouter(router) {
         return res.json({ status: code.ERROR, message: 'UNAUTHORIZATION' });
       }
 
-      const { token } = user;
+      const { token, balance, email } = user;
       const decoded = jwt.verify(token, SECRET_KEY)
       const { id } = decoded;
 
@@ -79,7 +79,6 @@ export default function userRouter(router) {
       return res.json({ status: code.SUCCESS, user })
 
     } catch (error) {
-      console.log(error)
       res.json({ status: code.ERROR, message: 'INVALID_TOKEN' })
     }
   })

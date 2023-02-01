@@ -4,10 +4,11 @@ import kenoModel from '@/models/keno';
 import code from '@/shared/code';
 import { currentTime } from '@/helpers/utils';
 import { ROUND_STATUS, PHRASES } from '@/shared/index';
+import authGuard from '@/middlewares/authGuard';
 
 export default function gameRouter(router) {
 
-  router.post('/bet/new', async (req, res) => {
+  router.post('/bet/new', authGuard, async (req, res) => {
     try {
       const { userId, gameId, roundId, items } = req.body;
       const round = await kenoModel.findOne({ gameId, roundId })
@@ -37,7 +38,7 @@ export default function gameRouter(router) {
     }
   })
 
-  router.post('/bet/cancel', async (req, res) => {
+  router.post('/bet/cancel', authGuard, async (req, res) => {
     try {
       const games = await betModel.find()
       return res.json({ status: code.SUCCESS, data: games })

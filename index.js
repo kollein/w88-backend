@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import initRouter from '@/router/index';
-import bodyParser from '@/helpers/bodyParser';
+import bodyParser from '@/middlewares/bodyParser';
 import runHeartBeat from '@/scheduler/index';
 
 // timezone

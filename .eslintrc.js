@@ -1,15 +1,20 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
     commonjs: true,
     es2020: true,
   },
   extends: [
-    'airbnb-base',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended'
   ],
-  parserOptions: {
-    ecmaVersion: 12,
-  },
+  parser: '@typescript-eslint/parser',
+  parserOptions: { project: ['./jsconfig.json'] },
+  plugins: [
+    '@typescript-eslint'
+  ],
   rules: {
   },
+  ignorePatterns: ['src/**/*.test.js']
 };
