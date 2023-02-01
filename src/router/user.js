@@ -68,7 +68,7 @@ export default function userRouter(router) {
         return res.json({ status: code.ERROR, message: 'UNAUTHORIZATION' });
       }
 
-      const { token, balance, email } = user;
+      const { token } = user;
       const decoded = jwt.verify(token, SECRET_KEY)
       const { id } = decoded;
 

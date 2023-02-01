@@ -3,9 +3,11 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import initRouter from '@/router/index';
 import bodyParser from '@/middlewares/bodyParser';
+// eslint-disable-next-line no-unused-vars
 import runHeartBeat from '@/scheduler/index';
 
 // timezone
+// eslint-disable-next-line no-undef
 process.env.TZ = "Asia/Bangkok";
 console.log(new Date().toString());
 
