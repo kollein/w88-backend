@@ -5,6 +5,10 @@ import initRouter from '@/router/index';
 import bodyParser from '@/helpers/bodyParser';
 import runHeartBeat from '@/scheduler/index';
 
+// timezone
+process.env.TZ = "Asia/Bangkok";
+console.log(new Date().toString());
+
 const app = express()
 const router = express.Router()
 app.use(cors())
@@ -22,7 +26,7 @@ initRouter(router);
 app.use('/api', router);
 
 // run the heart beat to perform the process in every second
-runHeartBeat();
+// runHeartBeat();
 
 const PORT = 6000;
 app.listen(PORT, () => {

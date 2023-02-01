@@ -14,8 +14,8 @@ const GAME_NAMES = {
 // PHRASES
 const PHRASES = {
   ROUND: {
-    NOT_FOUND: 'Round not found!',
-    ENDED: 'Round has been ended!'
+    NOT_FOUND: 'ROUND_NOT_FOUND',
+    ENDED: 'ROUND_ENDED'
   }
 }
 

@@ -1,5 +1,7 @@
+import moment from 'moment';
 import gameModel from '@/models/game';
 import kenoModel from '@/models/keno';
+import betModel from '@/models/bet';
 import code from '@/shared/code';
 import {
   GAME_NAMES,
@@ -7,7 +9,8 @@ import {
   ROUND_STATUS,
 } from '@/shared/index';
 import { currentTime } from '@/helpers/utils';
-import moment from 'moment';
+import { makeResult, rate } from '@/scheduler/keno/generator';
+import userModel from '@/models/user';
 
 const createNewRound = async () => {
   const gameName = GAME_NAMES.keno;
@@ -33,7 +36,7 @@ const createNewRound = async () => {
     result,
     startAt,
     endAt,
-    status: 'running'
+    status: ROUND_STATUS.running
   }
   console.log('data for create', record);
   const data = await kenoModel.create(record)
@@ -64,35 +67,8 @@ const updateAsStopBet = async (round) => {
   return data ? code.SUCCESS : code.ERROR;
 }
 
-const generateResult = async (type = ROUND_STATUS.running) => {
-  let result = {
-    nums: [],
-    sum: null,
-    bigSmall: null,
-    oddEven: null,
-    refund: false,
-    upDownDraw: null,
-    oddsEvensDraw: null,
-    cross: null
-  }
-
-  if (type === ROUND_STATUS.running) {
-    return result;
-  }
-
-  // for ended round
-  result = {
-    nums: ['12'],
-    sum: null,
-    bigSmall: null,
-    oddEven: null,
-    refund: false,
-    upDownDraw: null,
-    oddsEvensDraw: null,
-    cross: null
-  }
-
-  return result;
+const generateResult = async (type) => {
+  return makeResult(type);
 }
 
 const updateResult = async (round) => {
@@ -105,8 +81,59 @@ const updateResult = async (round) => {
   }
   console.log('data for update', update);
   const data = await kenoModel.findOneAndUpdate({ roundId }, update);
+  if (!data) return code.ERROR;
 
-  return data ? code.SUCCESS : code.ERROR;
+  const data2 = await updateBets(round, result)
+  console.log('updateBets:', data2);
+  return data2 ? code.SUCCESS : code.ERROR;
+}
+
+const updateBets = async (round, result) => {
+  const { roundId, gameId } = round;
+  console.log('updateBets roundId', roundId);
+  const bets = await betModel.find({ roundId, gameId })
+  console.log('bets', bets);
+  const data = [];
+
+  bets.forEach(async (x) => {
+    console.log('x', x);
+    const { id, userId } = x;
+    console.log(id, userId);
+    const win = calcWinLose(x, result);
+    const update = {
+      win,
+      status: ROUND_STATUS.ended
+    }
+    console.log('data for update', update);
+    const res = await betModel.findOneAndUpdate({ _id: id }, update);
+    const updateBalance = { $inc: { balance: win } }
+    const res2 = await userModel.findOneAndUpdate({ _id: userId }, updateBalance);
+    if (res2) {
+      data.push(res)
+    } else {
+      data.push(code.ERROR)
+    }
+  });
+  console.log('data', data);
+  return data
+}
+
+const calcWinLose = (bet, result) => {
+  let win = 0;
+  try {
+    const { betType, amount } = bet;
+    const betTypeKey = Object.keys(betType)[0];
+    console.log('betTypeKey', betTypeKey);
+    if (result[betTypeKey] === betType[betTypeKey]) {
+      win = amount * rate[betTypeKey];
+    } else {
+      win = amount * -1;
+    }
+    console.log('win', win);
+  } catch (err) {
+    console.log('err', err);
+  }
+  return win;
 }
 
 export default async function () {
@@ -130,9 +157,9 @@ export default async function () {
     console.log('updateAsStopBet:', res);
     if (res !== code.SUCCESS) return
 
-    const result = await updateResult(round)
-    console.log('updateResult:', result);
-    if (result !== code.SUCCESS) return
+    const res2 = await updateResult(round)
+    console.log('updateResult:', res2);
+    if (res2 !== code.SUCCESS) return
 
     console.log('socket emits to client new result');
 

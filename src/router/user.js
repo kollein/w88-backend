@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import userModel from '@/models/user';
 import code from '@/shared/code';
 import { SECRET_KEY } from '@/shared/index';
+import { v4 as uuidV4 } from 'uuid';
 
 export default function userRouter(router) {
 
@@ -12,10 +13,10 @@ export default function userRouter(router) {
     try {
       const newPassword = await bcrypt.hash(req.body.password, 10)
       await userModel.create({
-        name: req.body.name,
+        username: req.body.username,
         email: req.body.email,
         password: newPassword,
-        balance: 1000,
+        balance: 1000000000,
       })
       res.json({ status: code.SUCCESS })
     } catch (err) {
@@ -25,65 +26,61 @@ export default function userRouter(router) {
   })
 
   router.post('/login', async (req, res) => {
-    const user = await userModel.findOne({
-      email: req.body.email,
-    })
+    try {
 
-    if (!user) {
-      return res.json({ status: code.ERROR, message: 'Unauthorization' });
-    }
+      const user = await userModel.findOne({
+        username: req.body.username,
+      })
 
-    const isPasswordValid = await bcrypt.compare(
-      req.body.password,
-      user.password
-    )
+      if (!user) {
+        return res.json({ status: code.ERROR, message: 'Unauthorization' });
+      }
 
-    if (isPasswordValid) {
-      const token = jwt.sign(
-        {
-          name: user.name,
-          email: user.email,
-        },
-        SECRET_KEY
+      const { id, password } = user;
+
+      const isPasswordValid = await bcrypt.compare(
+        req.body.password,
+        password
       )
 
-      return res.json({ status: code.SUCCESS, user: token })
-    } else {
-      return res.json({ status: code.ERROR, user: false })
+      if (isPasswordValid) {
+        const options = { expiresIn: 3600 }
+        const token = jwt.sign({ id }, SECRET_KEY, options)
+        const proxyToken = uuidV4()
+        await userModel.updateOne({ _id: id }, { $set: { token, proxyToken } })
+
+        return res.json({ status: code.SUCCESS, token: proxyToken })
+      } else {
+        return res.json({ status: code.ERROR, message: 'Invalid password' })
+      }
+    } catch (err) {
+      return res.json({ status: code.ERROR, message: err.message })
     }
+
   })
 
-  router.get('/quote', async (req, res) => {
-    const token = req.headers['x-access-token']
-
+  router.get('/iam', async (req, res) => {
     try {
-      const decoded = jwt.verify(token, SECRET_KEY)
-      const email = decoded.email
-      const user = await userModel.findOne({ email: email })
+      const proxyToken = req.headers['x-access-token']
+      const user = await userModel.findOne({ proxyToken })
 
-      console.log('valid token')
-      return res.json({ status: code.SUCCESS, quote: user.quote })
+      if (!user) {
+        return res.json({ status: code.ERROR, message: 'UNAUTHORIZATION' });
+      }
+
+      const { token } = user;
+      const decoded = jwt.verify(token, SECRET_KEY)
+      const { id } = decoded;
+
+      if (!id) {
+        return res.json({ status: code.ERROR, message: 'INVALID_TOKEN' });
+      }
+
+      return res.json({ status: code.SUCCESS, user })
+
     } catch (error) {
       console.log(error)
-      res.json({ status: code.ERROR, message: 'invalid token' })
-    }
-  })
-
-  router.post('/quote', async (req, res) => {
-    const token = req.headers['x-access-token']
-
-    try {
-      const decoded = jwt.verify(token, SECRET_KEY)
-      const email = decoded.email
-      await userModel.updateOne(
-        { email: email },
-        { $set: { quote: req.body.quote } }
-      )
-
-      return res.json({ status: code.SUCCESS })
-    } catch (error) {
-      console.log(error)
-      res.json({ status: code.ERROR, message: 'invalid token' })
+      res.json({ status: code.ERROR, message: 'INVALID_TOKEN' })
     }
   })
 }
