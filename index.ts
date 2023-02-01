@@ -3,24 +3,21 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import initRouter from '@/router/index';
 import bodyParser from '@/middlewares/bodyParser';
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import runHeartBeat from '@/scheduler/index';
 
 // timezone
-// eslint-disable-next-line no-undef
 process.env.TZ = 'Asia/Bangkok';
 console.log(new Date().toString());
 
-const app = express()
-const router = express.Router()
-app.use(cors())
-app.use(express.json())
-app.use(bodyParser)
+const app = express();
+const router = express.Router();
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser);
 
-mongoose.set('strictQuery', false)
-mongoose
-	.connect('mongodb://localhost:27017/test')
-	.then(() => console.log('Connected!'));
+mongoose.set('strictQuery', false);
+mongoose.connect('mongodb://localhost:27017/test').then(() => console.log('Connected!'));
 
 // initialize all routes
 initRouter(router);
@@ -32,5 +29,5 @@ app.use('/api', router);
 
 const PORT = 6000;
 app.listen(PORT, () => {
-	console.log(`Server started on ${PORT}`)
-})
+  console.log(`Server started on ${PORT}`);
+});
