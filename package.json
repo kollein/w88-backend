@@ -5,7 +5,8 @@
 	"type": "module",
 	"license": "MIT",
 	"scripts": {
-		"dev": "nodemon --trace-deprecation --no-warnings --experimental-modules --es-module-specifier-resolution=node --loader ./custom-loader.mjs index.js"
+		"dev": "nodemon --trace-deprecation --no-warnings --experimental-modules --es-module-specifier-resolution=node --loader ./custom-loader.mjs index.js",
+		"lint": "eslint --fix --ext .js ."
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",

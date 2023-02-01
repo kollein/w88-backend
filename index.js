@@ -8,7 +8,7 @@ import runHeartBeat from '@/scheduler/index';
 
 // timezone
 // eslint-disable-next-line no-undef
-process.env.TZ = "Asia/Bangkok";
+process.env.TZ = 'Asia/Bangkok';
 console.log(new Date().toString());
 
 const app = express()

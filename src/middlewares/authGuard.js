@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
-import userModel from "@/models/user";
-import code from "@/shared/code";
-import { SECRET_KEY } from "@/shared/index";
+import jwt from 'jsonwebtoken';
+import userModel from '@/models/user';
+import code from '@/shared/code';
+import { SECRET_KEY } from '@/shared/index';
 
 export default async function authGuard(req, res, next) {
   try {
