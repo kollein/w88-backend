@@ -1,6 +1,6 @@
 function currentTime() { return new Date().getTime(); }
 
-function hashCode(str) {
+function hashCode(str: string) {
   let hash = 0, i, chr;
   const strLength = str.length;
 
