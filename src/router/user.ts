@@ -45,7 +45,7 @@ export default function userRouter(router: Router) {
         const proxyToken = uuidV4();
         await userModel.updateOne({ _id: id }, { $set: { token, proxyToken } });
 
-        return res.json({ status: code.SUCCESS, token: proxyToken, t: 1 });
+        return res.json({ status: code.SUCCESS, token: proxyToken });
       } else {
         return res.json({ status: code.ERROR, message: 'Invalid password' });
       }
