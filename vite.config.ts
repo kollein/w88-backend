@@ -7,6 +7,6 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
       '@root': path.resolve(__dirname, './'),
     },
-    extensions: ['.ts'],
+    extensions: ['.ts', '.js', '.json'],
   },
 });
