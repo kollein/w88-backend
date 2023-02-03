@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ESNext",
     "baseUrl": ".",
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@root/*": [
+        "./*"
       ]
     },
-    "rootDirs": [
-      "./"
-    ],
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "declaration": true,
     "rootDir": "./",
@@ -25,7 +26,7 @@
     ]
   },
   "include": [
-    "**/*.ts"
+    "**/*",
   ],
   "exclude": [
     "node_modules"

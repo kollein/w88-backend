@@ -2,10 +2,12 @@
 	"name": "server",
 	"version": "1.0.0",
 	"main": "dist/index.js",
+	"type": "module",
 	"license": "MIT",
 	"scripts": {
 		"lint": "eslint --fix --ext .ts .",
 		"dev:nodemon": "nodemon -e ts,json --trace-deprecation --no-warnings --experimental-modules --es-module-specifier-resolution=node --loader ./loader.js index.ts",
+		"dev:js": "nodemon -e js -w ./ index.js",
 		"dev:pm2": "pm2 start ecosystem.config.js --only nodeserver --watch",
 		"dev": "nodemon -e ts,js,json -w ./ -x npm run vite",
 		"vite": "VITE_MODE=development vite-node index.ts"
