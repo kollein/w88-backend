@@ -2,8 +2,7 @@ console.log('room');
 
 // on connect
 socket.on('connect', () => {
-  socket.emit('room', 'keno');
-  socket.emit('client', 'ready to fire');
+  console.log("🚀 ~ file: room.js:7 ~ socket.on ~ connect")
 });
 
 // on message

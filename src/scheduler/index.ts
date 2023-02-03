@@ -1,7 +1,11 @@
-import kenoScheduler from '@/scheduler/keno/index'
+import { Server } from 'socket.io';
+import kenoScheduler from '@/scheduler/keno/index';
+import kenoEvent from '@/socket/events/keno';
 
-export default function () {
+export default function (io: Server) {
   setInterval(() => {
-    kenoScheduler()
+    // keno
+    kenoScheduler();
+    kenoEvent(io);
   }, 1000);
 }
