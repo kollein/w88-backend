@@ -8,16 +8,16 @@
 		"dev:nodemon": "nodemon -e ts,json --trace-deprecation --no-warnings --experimental-modules --es-module-specifier-resolution=node --loader ./loader.js index.ts",
 		"dev:pm2": "pm2 start ecosystem.config.js --only nodeserver --watch",
 		"dev": "nodemon -e ts,js,json -w ./ -x npm run vite",
-		"vite": "vite-node index.ts"
+		"vite": "VITE_MODE=development vite-node index.ts"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
 		"cors": "^2.8.5",
-		"dotenv": "^14.2.0",
 		"express": "^4.17.1",
 		"jsonwebtoken": "^8.5.1",
 		"moment": "^2.29.4",
 		"mongoose": "^6.8.3",
+		"socket.io": "^4.3.1",
 		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
@@ -28,6 +28,7 @@
 		"@types/mongoose": "^5.11.97",
 		"@types/node": "^18.11.18",
 		"@types/uuid": "^9.0.0",
+		"@typescript-eslint/eslint-plugin": "^5.50.0",
 		"@typescript-eslint/parser": "^5.50.0",
 		"eslint": "^8.33.0",
 		"nodemon": "^2.0.20",

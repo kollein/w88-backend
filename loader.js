@@ -4,8 +4,8 @@ import {
   resolve as resolveTs,
   getFormat,
   transformSource,
-} from "ts-node/esm";
-import * as tsConfigPaths from "tsconfig-paths"
+} from 'ts-node/esm';
+import * as tsConfigPaths from 'tsconfig-paths';
 
 export { getFormat, transformSource };
 
@@ -15,7 +15,7 @@ const matchPath = tsConfigPaths.createMatchPath(absoluteBaseUrl, paths)
 export function resolve(specifier, context, defaultResolver) {
   const mappedSpecifier = matchPath(specifier)
   if (mappedSpecifier) {
-    specifier = `${mappedSpecifier}.js`
+    specifier = `${mappedSpecifier}.ts`
   }
   return resolveTs(specifier, context, defaultResolver);
 }

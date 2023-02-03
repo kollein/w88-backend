@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Socket.io</title>
+    <script src="../socket.io/socket.io.js"></script>
+    <script defer src="../helpers/form.js"></script>
+  </head>
+  <body>
+    <h1>
+      Hello i am socket client-transmitter from vinhadmin@139.180.137.169!
+    </h1>
+    <form id="form">
+      <input id="input" type="text" placeholder="message" />
+    </form>
+    <br />
+    <div id="messages"></div>
+
+    <script>
+      const ipAddress = "999pay.info";
+
+      var socket = io(`wss://${ipAddress}:3000`, {
+        transports: ["websocket"],
+        reconnectionDelayMax: 10000,
+        auth: {
+          token: "123",
+        },
+        query: {
+          "my-key": "my-value",
+        },
+      });
+    </script>
+  </body>
+</html>
